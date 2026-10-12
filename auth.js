@@ -174,12 +174,30 @@ $(document).ready(function () {
             return;
         }
 
+
         account.password = password;
         saveAccounts(accounts);
         sessionStorage.removeItem(RESET_KEY);
 
-        showMessage("#resetPasswordMessage",
-            "Password updated successfully! Redirecting to login...", "success");
+        const message = $("#resetPasswordMessage");
+
+        message
+            .text("Password updated successfully! Redirecting to login...")
+            .removeClass("text-danger")
+            .addClass("text-success");
+
+        form.reset();
+        form.classList.remove("was-validated");
+
+        form.querySelectorAll(".is-valid, .is-invalid").forEach(function (field) {
+            field.classList.remove("is-valid", "is-invalid");
+        });
+
+        setTimeout(function () {
+            window.location.replace("login.html");
+        }, 1500);
+
+
 
         form.reset();
 
@@ -259,3 +277,18 @@ $(document).ready(function () {
 });
 
 
+
+
+function togglePassword(inputId, button) {
+    const input = document.getElementById(inputId);
+
+    if (input.type === "password") {
+        input.type = "text";
+        button.textContent = "🙈";
+        button.setAttribute("aria-label", "Hide password");
+    } else {
+        input.type = "password";
+        button.textContent = "👁";
+        button.setAttribute("aria-label", "Show password");
+    }
+}
